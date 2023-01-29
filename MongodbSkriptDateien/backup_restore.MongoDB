@@ -1,0 +1,9 @@
+// backup der Datenbank SkiService erstellen 
+mongodump --db=SkiService --out=C:\SkiServiceBackup
+
+//Backup in eine BackupSkiService Datenbank restoren
+mongorestore --db=BackupSkiService --dir=C:\SkiServiceBackup\SkiService
+
+//in der Mongo Shell testen ob das Backup richtig gerestort wurde
+use BackupSkiService
+show collections

@@ -1,0 +1,36 @@
+//Admin User erstellen
+use admin
+
+db.createUser(
+    {
+        user: "admin",
+        pwd: "Admin123",
+        roles: [{role: "userAdminAnyDatabase", db: "admin"}]
+    }
+)
+
+//Testen ist Admin User richtig erstell worden
+show users
+
+//User Erstellen mit readWrite Berechtigung in SkiService Datenbank hat
+use SkiServiceUsers 
+
+db.createUser(
+    {
+        user: "User_RW",
+        pwd: "readWrite123",
+        roles: [{role: "readWrite", db: "SkiService"}]
+    }
+)
+
+//User Erstellen mit read Berechtigung in SkiService Datenbank hat
+db.createUser(
+    {
+        user: "User_R",
+        pwd: "read123",
+        roles: [{role: "read", db: "SkiService"}]
+    }
+)
+
+//Testen sind alle User Richtig erstellt worden
+show users

@@ -1,0 +1,158 @@
+//Erstellen der Datenbank
+use SkiService
+
+//Erstelen eines Schemas für die Mitarbeiter Collection
+db.createCollection("Mitarbeiter", {
+    validator:{
+        $jsonSchema: {
+            bsonType: "object",
+            title: "Mitarbeiter Object Validation",
+            required: ["Name", "Vorname", "Passwort"],
+            properties: {
+                Name: {
+                    bsonType: "string",
+                    description: "muss ein String sein"
+                },
+                Vorname: {
+                    bsonType: "string",
+                    description: "muss ein String sein"
+                },
+                Passwort: {
+                    bsonType: "string",
+                    description: "muss ein String sein"
+                }
+            }
+        }
+    }
+})
+
+//Ertsellen der Collection für die Mitarbeiter des Ski-Services und einfügen von ersten Daten
+db.Mitarbeiter.insertMany([
+    {
+        Name: "Osenger",
+        Vorname: "Leon",
+        Passwort: "Passwort123"
+    },
+    {
+        Name: "Peter",
+        Vorname: "Hans",
+        Passwort: "FischIstToll8"
+    },
+    {
+        Name: "Ueli",
+        Vorname: "Rüdiger",
+        Passwort: "Hogwarts"
+    },
+    {
+        Name: "Gundel",
+        Vorname: "Tom",
+        Passwort: "Passwort1"
+    },
+    {
+        Name: "Grau",
+        Vorname: "Gandalf",
+        Passwort: "1234"
+    },
+    {
+        Name: "Von Anhalt",
+        Vorname: "Frederich",
+        Passwort: "Prinz787"
+    }
+])
+
+//Testen ob die Collection auch wirklich eingefügt wurde.
+db.Mitarbeiter.find()
+
+//Erstelen eines Schemas für die Dienstleistungen Collection
+db.createCollection("Dienstleistungen", {
+    validator:{
+        $jsonSchema: {
+            bsonType: "object",
+            title: "Dienstleistungen Object Validation",
+            required: ["Dienstleistung", "Prioritaet", "Email", "Telefon", "Status", "Erstell_Datum", "Abhol_Datum"],
+            properties: {
+                Dienstleistung: {
+                    enum: ["Kleiner-Service", "Grosser-Service", "Rennski-Service", "Bindugen montieren und Einstellen", "Heisswachsen", "Fell zuschneiden"],
+                    description: "Muss einer dieser Stings sein: Kleiner-Service, Grosser-Service, Rennski-Service, Bindugen montieren und Einstellen, Heisswachsen oder Fell zuschneiden", 
+                },
+                Prioritaet: {
+                    enum: ["Hoch", "Mittel", "Niedrig"],
+                    description: "Muss einer dieser Stings sein: Hoch, Mittel, Niedrig"
+                },
+                Email: {
+                    bsonType: "string",
+                    description: "muss ein String sein"
+                },
+                Telefon: {
+                    bsonType: "string",
+                    description: "muss ein String sein"
+                },
+                Status: {
+                    enum: ["Offen", "In Arbeit", "Abgeschlossen"],
+                    description: "Muss einer dieser Stings sein: Offen, In Arbeit, Abgeschlossen"
+                },
+                Erstell_Datum: {
+                    bsonType: "string",
+                    description: "muss ein string sein"
+                },
+                Abhol_Datum: {
+                    bsonType: "string",
+                    description: "muss ein string sein"
+                }
+            }
+        }
+    }
+})
+
+//Ertsellen der Collection für die Dienstleistungen des Ski-Services und einfügen von ersten Daten
+db.Dienstleistungen.insertMany([
+    {
+        Dienstleistung: "Kleiner-Service",
+        Prioritaet: "Mittel",
+        Email: "Basti@Twicht.com",
+        Telefon: "0776544512",
+        Status: "Offen",
+        Erstell_Datum: "2020-12-01",
+        Abhol_Datum: "2020-12-10"
+    },
+    {
+        Dienstleistung: "Heisswachsen",
+        Prioritaet: "Hoch",
+        Email: "leon.osenger@student.ipso.ch",
+        Telefon: "0789345688",
+        Status: "In Arbeit",
+        Erstell_Datum: "2020-12-04",
+        Abhol_Datum: "2020-12-11"
+    },
+    {
+        Dienstleistung: "Rennski-Service",
+        Prioritaet: "Niedrig",
+        Email: "Fischer@gmail.com",
+        Telefon: "0789345688",
+        Status: "Offen",
+        Erstell_Datum: "2020-12-10",
+        Abhol_Datum: "2020-12-20"
+    },
+    {
+        Dienstleistung: "Fell zuschneiden",
+        Prioritaet: "Hoch",
+        Email: "Oser.Maier@edubs.ch",
+        Telefon: "0797655645",
+        Status: "Abgeschlossen",
+        Erstell_Datum: "2020-12-10",
+        Abhol_Datum: "2020-12-15"
+    }
+])
+
+//Testen ob Collection auch wirklich eingefügt wurde
+db.Dienstleistungen.find()
+
+
+//Indexes für die einzelnen Dienstleistungen in der Dienstleistungen collection erstellen damit diese schneller abgefragt werden können
+db.Dienstleistungen.createIndexes([
+    {Prioritaet: 1},
+    {Status: 1}
+])
+
+//Indexe in Dienstleistungen collection anschauen um zu Testen ob die Indexes richtig erstellt wurden
+db.Dienstleistungen.getIndexes()
