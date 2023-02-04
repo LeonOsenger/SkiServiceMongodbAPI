@@ -1,9 +1,18 @@
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using SkiServiceMongodbAPI.Models;
+using SkiServiceMongodbAPI.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<SkiServiceDatabaseSettings>(builder.Configuration.GetSection("SkiServiceDatabase"));
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.TryAddScoped<DienstleistungenService>();
+builder.Services.TryAddScoped<MitarbeiterLoginService>();
+builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
