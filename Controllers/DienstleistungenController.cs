@@ -10,9 +10,9 @@ namespace SkiServiceMongodbAPI.Controllers
     {
         private readonly DienstleistungenService _dienstleistungenService;
 
-        public DienstleistungenController(DienstleistungenService booksService)
+        public DienstleistungenController(DienstleistungenService DiensleistungsService)
         {
-            _dienstleistungenService = booksService;
+            _dienstleistungenService = DiensleistungsService;
         }
             
         [HttpGet]
