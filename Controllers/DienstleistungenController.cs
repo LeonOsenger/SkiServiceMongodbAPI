@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SkiServiceMongodbAPI.Models;
 using SkiServiceMongodbAPI.Services;
 
 namespace SkiServiceMongodbAPI.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]")]
     public class DienstleistungenController : ControllerBase
@@ -14,11 +16,13 @@ namespace SkiServiceMongodbAPI.Controllers
         {
             _dienstleistungenService = DiensleistungsService;
         }
-            
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<List<Dienstleistungen>> Get() =>
             await _dienstleistungenService.GetAsync();
-
+        
+        [AllowAnonymous]
         [HttpGet("{id:length(24)}")]
         public async Task<ActionResult<Dienstleistungen>> Get(string id)
         {
@@ -32,6 +36,7 @@ namespace SkiServiceMongodbAPI.Controllers
             return dienstleistung;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Post(Dienstleistungen newDienstleistung)
         {
@@ -40,6 +45,7 @@ namespace SkiServiceMongodbAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = newDienstleistung.Id }, newDienstleistung);
         }
 
+        [Authorize]
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Update(string id, Dienstleistungen updatedDienstleistung)
         {
@@ -57,6 +63,7 @@ namespace SkiServiceMongodbAPI.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {
